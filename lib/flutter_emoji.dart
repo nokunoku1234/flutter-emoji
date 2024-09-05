@@ -1,9 +1,9 @@
 library flutter_emoji;
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:characters/characters.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 ///
 /// Constants defined for Emoji.
@@ -148,8 +148,7 @@ class EmojiParser {
   }
 
   Future<void> initServerData() async {
-    final file = File(EMOJI_SOURCE);
-    final fileContent = await file.readAsString();
+    final fileContent = await rootBundle.loadString(EMOJI_SOURCE);
     final emojiArray = jsonDecode(fileContent) as List;
     final modifiedEmojiArray = emojiArray.map((item) {
       final key = item['aliases'][0].toString();
