@@ -150,12 +150,14 @@ class EmojiParser {
   Future<void> initServerData() async {
     final response = await http.get(Uri.parse(EMOJI_SOURCE));
     final body = response.body;
-    final emojiArray = jsonDecode(body) as List<Map<String, dynamic>>;
-    final mapEmojis = Map<String, dynamic>.fromIterable(emojiArray.map((item) {
-      final key = item['aliases'][0] as String;
-      final value = item['emoji'];
+    final emojiArray = jsonDecode(body) as List;
+    final modifiedEmojiArray = emojiArray.map((item) {
+      final key = item['aliases'][0].toString();
+      final value = item['emoji'].toString();
       return {key: value};
-    }));
+    });
+    final mapEmojis = Map.fromEntries(modifiedEmojiArray
+        .map((item) => MapEntry(item.keys.first, item.values.first)));
     _init(mapEmojis);
   }
 
